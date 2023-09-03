@@ -57,6 +57,8 @@ public class PosConnectAidlPlugin implements FlutterPlugin, MethodCallHandler, A
 
   @Override
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
+
+
     mResult = result;
     this.call = call;
 //    if (call.method.equals("getPlatformVersion")) {
@@ -82,6 +84,28 @@ public class PosConnectAidlPlugin implements FlutterPlugin, MethodCallHandler, A
       context.startService(intent);
       context. bindService(intent, connectService, context.BIND_AUTO_CREATE);
 
+      try {
+        int state = mIPosPrinterService.getPrinterStatus();
+        if (call.method.equals("printImage")) {
+
+          // get image from byte then add to printer
+          final Map<String, Object> getData = call.arguments();
+          byte[] path = (byte[]) getData.get("pathImage");
+          Bitmap bitmap = BitmapFactory.decodeByteArray(path, 0, path.length);
+          // 1 is center
+          // 1-16 to large data
+          mIPosPrinterService.printBitmap(1, 16, bitmap, callback);
+          mIPosPrinterService.printBlankLines(1, 2, callback);
+          mIPosPrinterService.printerPerformPrint(100, callback);
+          mResult.success(true);
+        }
+
+
+
+      } catch (Exception e){
+        Log.i("Debug", "onMethodCall: "+e.toString());
+      }
+
   }
 
 
@@ -95,6 +119,7 @@ public class PosConnectAidlPlugin implements FlutterPlugin, MethodCallHandler, A
 
         mIPosPrinterService = IPosPrinterService.Stub.asInterface(service);
         printerInit();
+
         if (call.method.equals("printImage")) {
 
           // get image from byte then add to printer
@@ -106,24 +131,26 @@ public class PosConnectAidlPlugin implements FlutterPlugin, MethodCallHandler, A
           mIPosPrinterService.printBitmap(1, 16, bitmap, callback);
           mIPosPrinterService.printBlankLines(1, 2, callback);
           mIPosPrinterService.printerPerformPrint(100, callback);
-          mResult.success("success");
+          mResult.success(true);
         } else {
-          mResult.success("success");
+          mResult.success(false);
 
         }
       } catch (Exception e) {
-         mResult.success(e.toString());
+         mResult.success(false);
       }
     }
 
     @Override
     public void onServiceDisconnected(ComponentName name) {
       mIPosPrinterService = null;
+      mResult.success(false);
     }
   };
 
 
   public void printerInit(){
+    android.util.Log.i("Debug", "printerInit: true ****");
     try {
       mIPosPrinterService.printerInit(callback);
     } catch (RemoteException e) {

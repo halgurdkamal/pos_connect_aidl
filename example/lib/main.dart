@@ -30,15 +30,15 @@ class _MyAppState extends State<MyApp> {
     String platformVersion;
     // Platform messages may fail, so we use a try/catch PlatformException.
     // We also handle the message potentially returning null.
-    try {
-      final ByteData bytes = await rootBundle.load('assets/Receipt.jpg');
-      final Uint8List listBytes = bytes.buffer.asUint8List();
-      platformVersion =
-          (await _posConnectAidlPlugin.printImage(pathImage: listBytes))
-              .toString();
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
+    // try {
+    //   final ByteData bytes = await rootBundle.load('assets/Receipt.jpg');
+    //   final Uint8List listBytes = bytes.buffer.asUint8List();
+    //   platformVersion =
+    //       (await _posConnectAidlPlugin.printImage(pathImage: listBytes))
+    //           .toString();
+    // } on PlatformException {
+    //   platformVersion = 'Failed to get platform version.';
+    // }
 
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling
@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> {
     if (!mounted) return;
 
     setState(() {
-      _platformVersion = platformVersion;
+      // _platformVersion = platformVersion;
     });
   }
 
@@ -58,7 +58,25 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text('Running on: $_platformVersion\n'),
+              ElevatedButton(
+                  onPressed: () async {
+                    try {
+                      final ByteData bytes =
+                          await rootBundle.load('assets/Receipt.jpg');
+                      final Uint8List listBytes = bytes.buffer.asUint8List();
+                      (await _posConnectAidlPlugin.printImage(
+                              pathImage: listBytes))
+                          .toString();
+                    } on PlatformException {}
+                  },
+                  child: Text('Print Image'))
+            ],
+          ),
         ),
       ),
     );
