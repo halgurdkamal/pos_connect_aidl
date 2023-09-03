@@ -5,6 +5,12 @@ this package with to connect q6pro pos with AIDL this package for now only suppo
 
 
 
+## Note
+
+```text
+The image must have a white background color.
+```
+
 
 ## Getting Started
 
