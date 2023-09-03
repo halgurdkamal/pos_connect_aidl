@@ -103,7 +103,7 @@ public class PosConnectAidlPlugin implements FlutterPlugin, MethodCallHandler, A
 
 
       } catch (Exception e){
-        Log.i("Debug", "onMethodCall: "+e.toString());
+
       }
 
   }
@@ -150,7 +150,7 @@ public class PosConnectAidlPlugin implements FlutterPlugin, MethodCallHandler, A
 
 
   public void printerInit(){
-    android.util.Log.i("Debug", "printerInit: true ****");
+
     try {
       mIPosPrinterService.printerInit(callback);
     } catch (RemoteException e) {
