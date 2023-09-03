@@ -82,7 +82,13 @@ public class PosConnectAidlPlugin implements FlutterPlugin, MethodCallHandler, A
       intent.setPackage("com.iposprinter.iposprinterservice");
       intent.setAction("com.iposprinter.iposprinterservice.IPosPrintService");
       context.startService(intent);
-      context. bindService(intent, connectService, context.BIND_AUTO_CREATE);
+    final boolean resultPos  =  context. bindService(intent, connectService, context.BIND_AUTO_CREATE);
+
+    // if bindService return false it is mean device not support this printer
+    if(resultPos == false) {
+      mResult.success(false);
+      return;
+    }
 
       try {
         int state = mIPosPrinterService.getPrinterStatus();

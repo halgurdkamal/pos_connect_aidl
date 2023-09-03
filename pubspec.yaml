@@ -1,6 +1,6 @@
 name: pos_connect_aidl
 description: this package with to connect q6pro pos with AIDL this package for now only support images print.
-version: 1.0.1
+version: 1.0.3
 homepage: https://github.com/halgurdkamal/pos_connect_aidl
 
 environment:
