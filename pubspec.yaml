@@ -1,6 +1,6 @@
 name: pos_connect_aidl
 description: this package with to connect q6pro pos with AIDL this package for now only support images print.
-version: 1.0.3
+version: 1.0.4
 homepage: https://github.com/halgurdkamal/pos_connect_aidl
 
 environment:
@@ -15,7 +15,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^3.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
